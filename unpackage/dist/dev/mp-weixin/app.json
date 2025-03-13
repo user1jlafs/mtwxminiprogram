@@ -1,0 +1,58 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/product/product",
+    "pages/order/order",
+    "pages/my/my"
+  ],
+  "subPackages": [
+    {
+      "root": "subpkg",
+      "pages": [
+        "goods_spec/goods_spec",
+        "confirm_order/confirm_order",
+        "search/search",
+        "user_info/user_info"
+      ]
+    }
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "奶茶点单",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#ff6b81",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "static/tabbar-picture/home.png",
+        "selectedIconPath": "static/tabbar-picture/home-active.png"
+      },
+      {
+        "pagePath": "pages/product/product",
+        "text": "菜单",
+        "iconPath": "static/tabbar-picture/coffee.png",
+        "selectedIconPath": "static/tabbar-picture/coffee-active.png"
+      },
+      {
+        "pagePath": "pages/order/order",
+        "text": "订单",
+        "iconPath": "static/tabbar-picture/my.png",
+        "selectedIconPath": "static/tabbar-picture/my-active.png"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的",
+        "iconPath": "static/tabbar-picture/my.png",
+        "selectedIconPath": "static/tabbar-picture/my-active.png"
+      }
+    ]
+  },
+  "usingComponents": {}
+}

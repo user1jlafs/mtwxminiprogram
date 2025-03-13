@@ -1,0 +1,272 @@
+@charset "UTF-8";
+/* 水平间距 */
+/* 水平间距 */
+.cart-component {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 900;
+}
+/* 购物车抽屉样式 */
+.cart-drawer {
+  position: fixed;
+  bottom: 100rpx;
+  /* 与底部购物车栏的高度对应 */
+  left: 0;
+  width: 100%;
+  background-color: #FFFFFF;
+  border-radius: 30rpx 30rpx 0 0;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  -webkit-transform: translateY(100%);
+          transform: translateY(100%);
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+  max-height: 60vh;
+  /* 限制最大高度为视口高度的60% */
+  display: flex;
+  flex-direction: column;
+}
+.cart-drawer.active {
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+}
+.cart-drawer .drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #F0F0F0;
+}
+.cart-drawer .drawer-header .drawer-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333333;
+}
+.cart-drawer .drawer-header .select-all {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #666666;
+  margin-left: auto;
+  margin-right: 20rpx;
+}
+.cart-drawer .drawer-header .select-all text {
+  margin-left: 6rpx;
+}
+.cart-drawer .drawer-header .clear-btn {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #999999;
+}
+.cart-drawer .drawer-header .clear-btn text {
+  margin-left: 6rpx;
+}
+.cart-drawer .cart-items {
+  flex: 1;
+  overflow-y: auto;
+  /* 确保内容可滚动 */
+  padding: 0 10rpx;
+  /* 减小左右内边距，为商品项留出更多空间 */
+}
+.cart-drawer .cart-items .empty-cart {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 300rpx;
+  color: #999999;
+  font-size: 28rpx;
+}
+.cart-drawer .cart-items .empty-cart .uni-icons {
+  margin-bottom: 20rpx;
+}
+.cart-drawer .cart-items .empty-cart .empty-cart-tip {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: #BBBBBB;
+}
+.cart-drawer .cart-items .cart-item {
+  display: flex;
+  align-items: center;
+  padding: 30rpx 20rpx;
+  /* 增加左右内边距 */
+  border-bottom: 1rpx solid #F5F5F5;
+  position: relative;
+  /* 添加相对定位 */
+  width: calc(100% - 40rpx);
+  /* 确保宽度计算正确 */
+}
+.cart-drawer .cart-items .cart-item .item-image {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  margin-right: 20rpx;
+}
+.cart-drawer .cart-items .cart-item .item-info {
+  flex: 1;
+  min-width: 0;
+  /* 防止内容溢出 */
+  padding-right: 20rpx;
+  /* 减小右侧内边距，不再为数量控制预留空间 */
+}
+.cart-drawer .cart-items .cart-item .item-info .item-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 6rpx;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cart-drawer .cart-items .cart-item .item-info .item-specs {
+  font-size: 24rpx;
+  color: #999999;
+  margin-bottom: 6rpx;
+  display: block;
+}
+.cart-drawer .cart-items .cart-item .item-info .item-price-box .item-price {
+  font-size: 30rpx;
+  color: #E57373;
+  font-weight: bold;
+}
+.cart-drawer .cart-items .cart-item .quantity-control {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-left: 10rpx;
+  /* 与商品信息保持一定距离 */
+  min-width: 160rpx;
+  /* 确保控制区域有足够的最小宽度 */
+}
+.cart-drawer .cart-items .cart-item .quantity-control .quantity-btn {
+  width: 46rpx;
+  height: 46rpx;
+  border-radius: 50%;
+  background-color: #F5F5F5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  /* 防止按钮被压缩 */
+}
+.cart-drawer .cart-items .cart-item .quantity-control .quantity-btn.minus {
+  border: none;
+  width: 50rpx;
+  height: 50rpx;
+  box-shadow: 0 2rpx 6rpx rgba(139, 90, 43, 0.4);
+  -webkit-transform: translateY(-1rpx);
+          transform: translateY(-1rpx);
+}
+.cart-drawer .cart-items .cart-item .quantity-control .quantity-btn.plus {
+  border: none;
+  width: 50rpx;
+  height: 50rpx;
+  box-shadow: 0 2rpx 6rpx rgba(139, 90, 43, 0.4);
+  -webkit-transform: translateY(-1rpx);
+          transform: translateY(-1rpx);
+}
+.cart-drawer .cart-items .cart-item .quantity-control .quantity-btn.plus .uni-icons {
+  color: #FFFFFF !important;
+  font-weight: bold;
+}
+.cart-drawer .cart-items .cart-item .quantity-control .quantity-text {
+  width: 50rpx;
+  text-align: center;
+  font-size: 28rpx;
+  flex-shrink: 0;
+  /* 防止文本被压缩 */
+}
+/* 遮罩层样式 */
+.cart-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+/* 底部购物车栏样式 */
+.cart-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  height: 100rpx;
+  background-color: #333333;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.1);
+  border-radius: 30rpx 30rpx 0 0;
+  z-index: 1000;
+}
+.cart-bar .cart-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 30rpx;
+}
+.cart-bar .cart-info .cart-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background-color: #666666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+  box-shadow: 0 4rpx 10rpx rgba(0, 0, 0, 0.3);
+  position: relative;
+  top: -15rpx;
+  transition: all 0.3s ease;
+}
+.cart-bar .cart-info .cart-icon.active {
+  background-color: #8B5A2B;
+}
+.cart-bar .cart-info .cart-icon .cart-badge {
+  position: absolute;
+  top: -10rpx;
+  right: -10rpx;
+  min-width: 36rpx;
+  height: 36rpx;
+  border-radius: 18rpx;
+  background-color: #E57373;
+  color: #FFFFFF;
+  font-size: 22rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6rpx;
+}
+.cart-bar .cart-info .price-info .total-price {
+  color: #FFFFFF;
+  font-size: 36rpx;
+  font-weight: bold;
+}
+.cart-bar .checkout-btn {
+  width: 240rpx;
+  height: 100%;
+  background-color: #CCCCCC;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  transition: background-color 0.3s ease;
+}
+.cart-bar .checkout-btn.active {
+  background-color: #8B5A2B;
+}
+.cart-bar .checkout-btn.active:active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+

@@ -1,0 +1,101 @@
+{
+	"pages": [
+		{
+			"path": "pages/home/home",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/product/product",
+			"style": {
+				"navigationBarTitleText": "菜单",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/order/order",
+			"style": {
+				"navigationBarTitleText": "订单",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/my/my",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"navigationStyle": "custom"
+			}
+		}
+	],
+	"subPackages": [
+    {
+      "root": "subpkg",
+      "pages": [
+				{
+        "path" : "goods_spec/goods_spec",
+        "style": {
+          "navigationBarTitleText": "商品规格"
+        	}
+      	},
+				{
+					"path" : "confirm_order/confirm_order",
+					"style": {
+						"navigationBarTitleText": "确认订单"
+					}
+				},
+				{
+					"path" : "search/search",
+					"style": {
+						"navigationBarTitleText": "搜索"
+					}
+				},
+				{
+					"path" : "user_info/user_info",
+					"style": {
+						"navigationBarTitleText": "填写用户信息"
+					}
+				}
+			]
+    }
+  ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "奶茶点单",
+		"navigationBarBackgroundColor": "#ffffff",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#999999",
+		"selectedColor": "#ff6b81",
+		"backgroundColor": "#ffffff",
+		"borderStyle": "black",
+		"list": [
+			{
+				"pagePath": "pages/home/home",
+				"text": "首页",
+				"iconPath": "static/tabbar-picture/home.png",
+				"selectedIconPath": "static/tabbar-picture/home-active.png"
+			},
+			{
+				"pagePath": "pages/product/product",
+				"text": "菜单",
+				"iconPath": "static/tabbar-picture/coffee.png",
+				"selectedIconPath": "static/tabbar-picture/coffee-active.png"
+			},
+			{
+				"pagePath": "pages/order/order",
+				"text": "订单",
+				"iconPath": "static/tabbar-picture/my.png",
+				"selectedIconPath": "static/tabbar-picture/my-active.png"
+			},
+			{
+				"pagePath": "pages/my/my",
+				"text": "我的",
+				"iconPath": "static/tabbar-picture/my.png",
+				"selectedIconPath": "static/tabbar-picture/my-active.png"
+			}
+		]
+	}
+}
