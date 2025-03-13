@@ -1,0 +1,1 @@
+<view class="section-title-box"><view class="section-title"><text>{{title}}</text></view><block wx:if="{{decorationType==='tea'}}"><view class="tea-decoration"></view></block><block wx:if="{{decorationType==='bubble'}}"><view class="bubble-decoration"></view></block></view>

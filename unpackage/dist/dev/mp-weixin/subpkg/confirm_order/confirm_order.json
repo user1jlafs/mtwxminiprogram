@@ -1,6 +1,10 @@
 {
   "navigationBarTitleText": "确认订单",
   "usingComponents": {
-    "uni-icons": "/uni_modules/uni-icons/components/uni-icons/uni-icons"
+    "delivery-address": "/components/order/DeliveryAddress",
+    "product-list": "/components/order/ProductList",
+    "payment-method": "/components/order/PaymentMethod",
+    "pickup-method": "/components/order/PickupMethod",
+    "order-footer": "/components/order/OrderFooter"
   }
 }

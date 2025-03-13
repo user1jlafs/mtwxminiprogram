@@ -39,7 +39,7 @@
             </view>
             <text class="quantity-text">{{item.quantity}}</text>
             <view class="quantity-btn plus" @click="increaseQuantity(index)">
-              <uni-icons type="plus" size="16" color="#8B5A2B"></uni-icons>
+              <uni-icons type="plus" size="16" color="#FFFFFF"></uni-icons>
             </view>
           </view>
         </view>
@@ -202,6 +202,13 @@ export default {
 </script>
 
 <style lang="scss">
+/* 奶茶主题色变量 */
+$tea-primary: #8B5A2B; /* 奶茶棕色 - 主色 */
+$tea-secondary: #C39B77; /* 浅奶茶色 - 次要色 */
+$tea-light: #FFF8F0; /* 奶茶背景色 - 浅色 */
+$tea-accent: #E57373; /* 强调色 - 用于价格等 */
+$tea-dark: #333333; /* 深色 - 用于文本和底栏 */
+
 .cart-component {
   position: relative;
   width: 100%;
@@ -220,8 +227,8 @@ export default {
   box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.1);
   z-index: 999;
   transform: translateY(100%);
-  transition: transform 0.3s ease;
-  max-height: 60vh; /* 限制最大高度为视口高度的60% */
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 65vh; /* 限制最大高度为视口高度的65% */
   display: flex;
   flex-direction: column;
   
@@ -235,20 +242,55 @@ export default {
     align-items: center;
     padding: 30rpx;
     border-bottom: 1rpx solid #F0F0F0;
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 15rpx;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60rpx;
+      height: 6rpx;
+      background-color: #E0E0E0;
+      border-radius: 3rpx;
+    }
     
     .drawer-title {
       font-size: 32rpx;
       font-weight: bold;
-      color: #333333;
+      color: $tea-dark;
+      margin-top: 15rpx;
+      position: relative;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        left: -10rpx;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4rpx;
+        height: 24rpx;
+        background-color: $tea-primary;
+        border-radius: 2rpx;
+      }
     }
     
     .select-all {
       display: flex;
       align-items: center;
-      font-size: 24rpx;
+      font-size: 26rpx;
       color: #666666;
       margin-left: auto;
       margin-right: 20rpx;
+      background-color: $tea-light;
+      padding: 8rpx 16rpx;
+      border-radius: 20rpx;
+      transition: all 0.2s ease;
+      
+      &:active {
+        opacity: 0.8;
+      }
       
       text {
         margin-left: 6rpx;
@@ -258,8 +300,16 @@ export default {
     .clear-btn {
       display: flex;
       align-items: center;
-      font-size: 24rpx;
+      font-size: 26rpx;
       color: #999999;
+      background-color: #F5F5F5;
+      padding: 8rpx 16rpx;
+      border-radius: 20rpx;
+      transition: all 0.2s ease;
+      
+      &:active {
+        opacity: 0.8;
+      }
       
       text {
         margin-left: 6rpx;
@@ -269,8 +319,8 @@ export default {
   
   .cart-items {
     flex: 1;
-    overflow-y: auto; /* 确保内容可滚动 */
-    padding: 0 10rpx; /* 减小左右内边距，为商品项留出更多空间 */
+    overflow-y: auto;
+    padding: 10rpx 10rpx;
     
     .empty-cart {
       display: flex;
@@ -283,6 +333,7 @@ export default {
       
       .uni-icons {
         margin-bottom: 20rpx;
+        opacity: 0.6;
       }
       
       .empty-cart-tip {
@@ -295,28 +346,40 @@ export default {
     .cart-item {
       display: flex;
       align-items: center;
-      padding: 30rpx 20rpx; /* 增加左右内边距 */
+      padding: 25rpx 15rpx;
       border-bottom: 1rpx solid #F5F5F5;
-      position: relative; /* 添加相对定位 */
-      width: calc(100% - 40rpx); /* 确保宽度计算正确 */
+      position: relative;
+      transition: all 0.2s ease;
+      
+      &:active {
+        background-color: #FAFAFA;
+      }
+      
+      .item-select {
+        padding: 10rpx;
+        margin-right: 10rpx;
+      }
       
       .item-image {
-        width: 120rpx;
-        height: 120rpx;
+        width: 100rpx;
+        height: 100rpx;
         border-radius: 12rpx;
-        margin-right: 20rpx;
+        margin-right: 15rpx;
+        box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+        background-color: $tea-light;
+        object-fit: cover;
       }
       
       .item-info {
         flex: 1;
-        min-width: 0; /* 防止内容溢出 */
-        padding-right: 20rpx; /* 减小右侧内边距，不再为数量控制预留空间 */
+        min-width: 0;
+        padding-right: 10rpx;
         
         .item-name {
           font-size: 28rpx;
           font-weight: bold;
-          color: #333333;
-          margin-bottom: 6rpx;
+          color: $tea-dark;
+          margin-bottom: 8rpx;
           display: block;
           white-space: nowrap;
           overflow: hidden;
@@ -326,14 +389,19 @@ export default {
         .item-specs {
           font-size: 24rpx;
           color: #999999;
-          margin-bottom: 6rpx;
+          margin-bottom: 10rpx;
           display: block;
+          line-height: 1.3;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
         
         .item-price-box {
           .item-price {
             font-size: 30rpx;
-            color: #E57373;
+            color: $tea-accent;
             font-weight: bold;
           }
         }
@@ -343,46 +411,43 @@ export default {
         display: flex;
         align-items: center;
         position: relative;
-        margin-left: 10rpx; /* 与商品信息保持一定距离 */
-        min-width: 160rpx; /* 确保控制区域有足够的最小宽度 */
+        margin-left: 5rpx;
         
         .quantity-btn {
-          width: 46rpx;
-          height: 46rpx;
+          width: 44rpx;
+          height: 44rpx;
           border-radius: 50%;
-          background-color: #F5F5F5;
           display: flex;
           align-items: center;
           justify-content: center;
-          flex-shrink: 0; /* 防止按钮被压缩 */
+          transition: all 0.2s ease;
           
           &.minus {
-            border: none;
-            width: 50rpx;
-            height: 50rpx;
-            box-shadow: 0 2rpx 6rpx rgba(139, 90, 43, 0.4);
-            transform: translateY(-1rpx);;
+            background-color: #F5F5F5;
+            border: 1rpx solid #E0E0E0;
+            
+            &:active {
+              opacity: 0.8;
+            }
           }
           
           &.plus {
-            border: none;
-            width: 50rpx;
-            height: 50rpx;
-            box-shadow: 0 2rpx 6rpx rgba(139, 90, 43, 0.4);
-            transform: translateY(-1rpx);
+            background-color: $tea-primary;
+            box-shadow: 0 2rpx 6rpx rgba(139, 90, 43, 0.3);
             
-            .uni-icons {
-              color: #FFFFFF !important;
-              font-weight: bold;
+            &:active {
+              opacity: 0.8;
+              transform: scale(0.95);
             }
           }
         }
         
         .quantity-text {
-          width: 50rpx;
+          width: 40rpx;
           text-align: center;
-          font-size: 28rpx;
-          flex-shrink: 0; /* 防止文本被压缩 */
+          font-size: 26rpx;
+          color: $tea-dark;
+          font-weight: bold;
         }
       }
     }
@@ -398,6 +463,13 @@ export default {
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 998;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* 底部购物车栏样式 */
@@ -407,11 +479,23 @@ export default {
   left: 0;
   width: 100%;
   display: flex;
-  height: 100rpx;
-  background-color: #333333;
+  height: 98rpx;
+  background-color: $tea-dark;
   box-shadow: 0 -2rpx 10rpx rgba(0,0,0,0.1);
-  border-radius: 30rpx 30rpx 0 0;
+  border-radius: 20rpx 20rpx 0 0;
   z-index: 1000;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2rpx;
+    background: linear-gradient(to right, $tea-secondary, transparent);
+    opacity: 0.5;
+  }
   
   .cart-info {
     flex: 1;
@@ -427,66 +511,89 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-right: 20rpx;
+      margin-right: 15rpx;
       box-shadow: 0 4rpx 10rpx rgba(0, 0, 0, 0.3);
       position: relative;
       top: -15rpx;
       transition: all 0.3s ease;
+      border: 3rpx solid $tea-dark;
       
       &.active {
-        background-color: #8B5A2B;
+        background: linear-gradient(135deg, $tea-secondary, $tea-primary);
+        transform: translateY(-5rpx);
       }
       
       .cart-badge {
         position: absolute;
-        top: -10rpx;
-        right: -10rpx;
-        min-width: 36rpx;
-        height: 36rpx;
-        border-radius: 18rpx;
-        background-color: #E57373;
+        top: -8rpx;
+        right: -8rpx;
+        min-width: 32rpx;
+        height: 32rpx;
+        border-radius: 16rpx;
+        background-color: $tea-accent;
         color: #FFFFFF;
-        font-size: 22rpx;
+        font-size: 20rpx;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 0 6rpx;
+        padding: 0 4rpx;
+        box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.2);
+        animation: pulse 2s infinite;
       }
     }
     
     .price-info {
       .total-price {
         color: #FFFFFF;
-        font-size: 36rpx;
+        font-size: 32rpx;
         font-weight: bold;
+        text-shadow: 0 1rpx 3rpx rgba(0, 0, 0, 0.2);
       }
     }
   }
   
   .checkout-btn {
-    width: 240rpx;
+    width: 220rpx;
     height: 100%;
     background-color: #CCCCCC;
     color: #FFFFFF;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 32rpx;
-    transition: background-color 0.3s ease;
+    font-size: 30rpx;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
     
     &.active {
-      background-color: #8B5A2B;
+      background: linear-gradient(to right, $tea-secondary, $tea-primary);
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to bottom, rgba(255,255,255,0.1), transparent);
+      }
     }
     
-    &.active:active::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.1);
+    &.active:active {
+      transform: scale(0.98);
+    }
+    
+    text {
+      position: relative;
+      z-index: 1;
     }
   }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 </style>

@@ -98,42 +98,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components
-try {
-  components = {
-    uniIcons: function () {
-      return Promise.all(/*! import() | uni_modules/uni-icons/components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 126))
-    },
-  }
-} catch (e) {
-  if (
-    e.message.indexOf("Cannot find module") !== -1 &&
-    e.message.indexOf(".vue") !== -1
-  ) {
-    console.error(e.message)
-    console.error("1. 排查组件名称拼写是否正确")
-    console.error(
-      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
-    )
-    console.error(
-      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
-    )
-  } else {
-    throw e
-  }
-}
 var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var g0 = _vm.pickupMethod === "delivery" ? _vm.savedAddresses.length : null
-  _vm.$mp.data = Object.assign(
-    {},
-    {
-      $root: {
-        g0: g0,
-      },
-    }
-  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -176,33 +144,56 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 43));
 var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 45));
+var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ 5));
 var _defineProperty2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/defineProperty */ 11));
 var _OrderRequest = __webpack_require__(/*! @/api/OrderRequest */ 83);
 var _vuex = __webpack_require__(/*! vuex */ 34);
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+var DeliveryAddress = function DeliveryAddress() {
+  __webpack_require__.e(/*! require.ensure | components/order/DeliveryAddress */ "components/order/DeliveryAddress").then((function () {
+    return resolve(__webpack_require__(/*! @/components/order/DeliveryAddress.vue */ 156));
+  }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+};
+var ProductList = function ProductList() {
+  __webpack_require__.e(/*! require.ensure | components/order/ProductList */ "components/order/ProductList").then((function () {
+    return resolve(__webpack_require__(/*! @/components/order/ProductList.vue */ 163));
+  }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+};
+var PaymentMethod = function PaymentMethod() {
+  __webpack_require__.e(/*! require.ensure | components/order/PaymentMethod */ "components/order/PaymentMethod").then((function () {
+    return resolve(__webpack_require__(/*! @/components/order/PaymentMethod.vue */ 170));
+  }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+};
+var PickupMethod = function PickupMethod() {
+  __webpack_require__.e(/*! require.ensure | components/order/PickupMethod */ "components/order/PickupMethod").then((function () {
+    return resolve(__webpack_require__(/*! @/components/order/PickupMethod.vue */ 177));
+  }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+};
+var OrderFooter = function OrderFooter() {
+  __webpack_require__.e(/*! require.ensure | components/order/OrderFooter */ "components/order/OrderFooter").then((function () {
+    return resolve(__webpack_require__(/*! @/components/order/OrderFooter.vue */ 184));
+  }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+};
 var _default = {
+  components: {
+    DeliveryAddress: DeliveryAddress,
+    ProductList: ProductList,
+    PaymentMethod: PaymentMethod,
+    PickupMethod: PickupMethod,
+    OrderFooter: OrderFooter
+  },
   data: function data() {
     return {
-      statusBarHeight: 0,
       pickupMethod: 'self',
       // self-自提, delivery-外送
       dineMethod: 'store',
       // store-店内用餐, takeout-自提带走
       remark: '',
-      // 模拟购物车数据
-      cartProducts: [{
-        id: '1',
-        name: '生椰拿铁',
-        specification: '大杯 16oz/ILAC金奖豆/冰/不另外加糖',
-        price: 9.9,
-        originalPrice: 29,
-        count: 1,
-        image: '/static/c1.png',
-        isSpecial: true
-      }],
-      discount: 19.1,
-      totalPrice: 9.9,
+      // 购物车数据
+      cartProducts: [],
+      discount: 0,
+      totalPrice: 0,
       // 地址相关数据
       savedAddresses: [],
       selectedAddress: null,
@@ -217,7 +208,7 @@ var _default = {
       }
     };
   },
-  computed: _objectSpread({}, (0, _vuex.mapState)('m_user', ['userInfo'])),
+  computed: _objectSpread(_objectSpread({}, (0, _vuex.mapState)('m_user', ['userInfo'])), (0, _vuex.mapGetters)('m_cart', ['selectedCartList'])),
   onLoad: function onLoad(options) {
     // 获取状态栏高度
     this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight;
@@ -234,8 +225,23 @@ var _default = {
   methods: {
     // 获取购物车商品
     getCartProducts: function getCartProducts() {
-      // 实际项目中应该从Vuex中获取购物车数据
-      // this.cartProducts = this.$store.state.cart.cartList;
+      var _this = this;
+      // 从Vuex中获取已选中的购物车商品
+      var selectedProducts = this.selectedCartList;
+
+      // 将购物车商品转换为订单商品格式
+      this.cartProducts = selectedProducts.map(function (item) {
+        return {
+          id: item.id,
+          name: item.name,
+          specification: _this.formatSpecs(item.specs),
+          price: item.price,
+          originalPrice: item.originalPrice || null,
+          count: item.quantity,
+          image: item.image,
+          isSpecial: item.isSpecial || false
+        };
+      });
 
       // 计算总价
       this.calculateTotal();
@@ -243,22 +249,61 @@ var _default = {
     // 计算总价
     calculateTotal: function calculateTotal() {
       var total = 0;
+      var originalTotal = 0;
       this.cartProducts.forEach(function (item) {
         total += item.price * item.count;
+        if (item.originalPrice) {
+          originalTotal += item.originalPrice * item.count;
+        } else {
+          originalTotal += item.price * item.count;
+        }
       });
       this.totalPrice = total.toFixed(1);
+      // 计算优惠金额（原价总和 - 实际总价）
+      this.discount = (originalTotal - total).toFixed(1);
+
+      // 如果没有优惠，设置为0
+      if (this.discount <= 0) {
+        this.discount = 0;
+      }
     },
-    // 选择取餐方式
-    selectPickupMethod: function selectPickupMethod(method) {
-      this.pickupMethod = method;
-    },
-    // 选择用餐方式
-    selectDineMethod: function selectDineMethod(method) {
-      this.dineMethod = method;
+    // 格式化规格信息为可读字符串
+    formatSpecs: function formatSpecs(specs) {
+      if (!specs) return '';
+
+      // 过滤掉空值的规格
+      var validSpecs = Object.entries(specs).filter(function (_ref) {
+        var _ref2 = (0, _slicedToArray2.default)(_ref, 2),
+          key = _ref2[0],
+          value = _ref2[1];
+        return value && value.trim() !== '';
+      }).map(function (_ref3) {
+        var _ref4 = (0, _slicedToArray2.default)(_ref3, 2),
+          key = _ref4[0],
+          value = _ref4[1];
+        // 将规格类型转为中文显示
+        var typeText = key;
+        switch (key) {
+          case 'size':
+            typeText = '杯型';
+            break;
+          case 'sugar':
+            typeText = '糖度';
+            break;
+          case 'temperature':
+            typeText = '温度';
+            break;
+          case 'addon':
+            typeText = '加料';
+            break;
+        }
+        return "".concat(typeText, ": ").concat(value);
+      });
+      return validSpecs.join(' | ');
     },
     // 显示备注弹窗
     showRemarkPopup: function showRemarkPopup() {
-      var _this = this;
+      var _this2 = this;
       uni.showModal({
         title: '添加备注',
         content: '请输入特殊要求',
@@ -266,14 +311,14 @@ var _default = {
         placeholderText: '如少糖、少冰等',
         success: function success(res) {
           if (res.confirm && res.content) {
-            _this.remark = res.content;
+            _this2.remark = res.content;
           }
         }
       });
     },
     // 显示地址列表
     showAddressList: function showAddressList() {
-      var _this2 = this;
+      var _this3 = this;
       // 实际项目中应该从本地存储或API获取地址列表
       // 这里使用模拟数据
       if (this.savedAddresses.length === 0) {
@@ -305,13 +350,13 @@ var _default = {
           return "".concat(addr.name, " ").concat(addr.phone, " ").concat(addr.province).concat(addr.city).concat(addr.district).concat(addr.detailAddress);
         }),
         success: function success(res) {
-          _this2.selectedAddress = _this2.savedAddresses[res.tapIndex];
+          _this3.selectedAddress = _this3.savedAddresses[res.tapIndex];
         }
       });
     },
     // 显示地区选择器
     showRegionPicker: function showRegionPicker() {
-      var _this3 = this;
+      var _this4 = this;
       // 实际项目中应该使用uni-data-picker组件或其他地区选择组件
       // 这里使用简化的方式模拟
       uni.showToast({
@@ -321,9 +366,9 @@ var _default = {
 
       // 模拟选择结果
       setTimeout(function () {
-        _this3.addressForm.province = '广东省';
-        _this3.addressForm.city = '广州市';
-        _this3.addressForm.district = '天河区';
+        _this4.addressForm.province = '广东省';
+        _this4.addressForm.city = '广州市';
+        _this4.addressForm.district = '天河区';
       }, 1000);
     },
     // 切换默认地址
@@ -332,14 +377,14 @@ var _default = {
     },
     // 提交订单
     submitOrder: function submitOrder() {
-      var _this4 = this;
+      var _this5 = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
         var orderData, newAddress, result;
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (!(!_this4.userInfo || !_this4.userInfo.id)) {
+                if (!(!_this5.userInfo || !_this5.userInfo.id)) {
                   _context.next = 4;
                   break;
                 }
@@ -354,11 +399,11 @@ var _default = {
                 }, 1500);
                 return _context.abrupt("return");
               case 4:
-                if (!(_this4.pickupMethod === 'delivery')) {
+                if (!(_this5.pickupMethod === 'delivery')) {
                   _context.next = 23;
                   break;
                 }
-                if (!(_this4.savedAddresses.length > 0 && !_this4.selectedAddress)) {
+                if (!(_this5.savedAddresses.length > 0 && !_this5.selectedAddress)) {
                   _context.next = 10;
                   break;
                 }
@@ -368,11 +413,11 @@ var _default = {
                 });
                 return _context.abrupt("return");
               case 10:
-                if (!(_this4.savedAddresses.length === 0)) {
+                if (!(_this5.savedAddresses.length === 0)) {
                   _context.next = 23;
                   break;
                 }
-                if (_this4.addressForm.name) {
+                if (_this5.addressForm.name) {
                   _context.next = 14;
                   break;
                 }
@@ -382,7 +427,7 @@ var _default = {
                 });
                 return _context.abrupt("return");
               case 14:
-                if (_this4.addressForm.phone) {
+                if (_this5.addressForm.phone) {
                   _context.next = 17;
                   break;
                 }
@@ -392,7 +437,7 @@ var _default = {
                 });
                 return _context.abrupt("return");
               case 17:
-                if (!(!_this4.addressForm.province || !_this4.addressForm.city || !_this4.addressForm.district)) {
+                if (!(!_this5.addressForm.province || !_this5.addressForm.city || !_this5.addressForm.district)) {
                   _context.next = 20;
                   break;
                 }
@@ -402,7 +447,7 @@ var _default = {
                 });
                 return _context.abrupt("return");
               case 20:
-                if (_this4.addressForm.detailAddress) {
+                if (_this5.addressForm.detailAddress) {
                   _context.next = 23;
                   break;
                 }
@@ -414,51 +459,51 @@ var _default = {
               case 23:
                 // 构建订单数据
                 orderData = {
-                  products: _this4.cartProducts.map(function (item) {
+                  products: _this5.cartProducts.map(function (item) {
                     return {
                       productId: item.id,
                       count: item.count,
                       specification: item.specification
                     };
                   }),
-                  totalAmount: _this4.totalPrice,
-                  pickupMethod: _this4.pickupMethod,
-                  dineMethod: _this4.dineMethod,
-                  remark: _this4.remark
+                  totalAmount: _this5.totalPrice,
+                  pickupMethod: _this5.pickupMethod,
+                  dineMethod: _this5.dineMethod,
+                  remark: _this5.remark
                 }; // 如果是外送模式，添加地址信息
-                if (_this4.pickupMethod === 'delivery') {
-                  if (_this4.selectedAddress) {
+                if (_this5.pickupMethod === 'delivery') {
+                  if (_this5.selectedAddress) {
                     // 使用已选择的地址
                     orderData.address = {
-                      name: _this4.selectedAddress.name,
-                      phone: _this4.selectedAddress.phone,
-                      province: _this4.selectedAddress.province,
-                      city: _this4.selectedAddress.city,
-                      district: _this4.selectedAddress.district,
-                      detailAddress: _this4.selectedAddress.detailAddress
+                      name: _this5.selectedAddress.name,
+                      phone: _this5.selectedAddress.phone,
+                      province: _this5.selectedAddress.province,
+                      city: _this5.selectedAddress.city,
+                      district: _this5.selectedAddress.district,
+                      detailAddress: _this5.selectedAddress.detailAddress
                     };
                   } else {
                     // 使用表单中填写的地址
                     orderData.address = {
-                      name: _this4.addressForm.name,
-                      phone: _this4.addressForm.phone,
-                      province: _this4.addressForm.province,
-                      city: _this4.addressForm.city,
-                      district: _this4.addressForm.district,
-                      detailAddress: _this4.addressForm.detailAddress
+                      name: _this5.addressForm.name,
+                      phone: _this5.addressForm.phone,
+                      province: _this5.addressForm.province,
+                      city: _this5.addressForm.city,
+                      district: _this5.addressForm.district,
+                      detailAddress: _this5.addressForm.detailAddress
                     };
 
                     // 如果设置为默认地址，保存到地址列表中
-                    if (_this4.addressForm.isDefault) {
+                    if (_this5.addressForm.isDefault) {
                       newAddress = _objectSpread({
                         id: Date.now().toString()
-                      }, _this4.addressForm); // 将其他地址的默认状态设为false
-                      _this4.savedAddresses.forEach(function (addr) {
+                      }, _this5.addressForm); // 将其他地址的默认状态设为false
+                      _this5.savedAddresses.forEach(function (addr) {
                         addr.isDefault = false;
                       });
 
                       // 添加新地址到地址列表
-                      _this4.savedAddresses.push(newAddress);
+                      _this5.savedAddresses.push(newAddress);
 
                       // 实际项目中应该保存到本地存储或通过API保存到服务器
                       // uni.setStorageSync('savedAddresses', JSON.stringify(this.savedAddresses));
@@ -484,8 +529,8 @@ var _default = {
                     });
                   }, 1500);
 
-                  // 清空购物车
-                  // this.$store.commit('cart/clearCart');
+                  // 清空购物车中已选中的商品
+                  _this5.$store.commit('m_cart/removeSelectedGoods');
                 }
                 _context.next = 36;
                 break;
