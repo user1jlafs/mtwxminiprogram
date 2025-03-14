@@ -10,6 +10,7 @@
     <product-list 
       :products="cartProducts"
       @show-remark-popup="showRemarkPopup"
+      :remark="remark"
     />
     
     <!-- 支付方式 -->
@@ -151,9 +152,9 @@ export default {
     showRemarkPopup() {
       uni.showModal({
         title: '添加备注',
-        content: '请输入特殊要求',
+        content: '',
         editable: true,
-        placeholderText: '如少糖、少冰等',
+        placeholderText: '请输入特殊要求: 如少糖、少冰等',
         success: (res) => {
           if (res.confirm && res.content) {
             this.remark = res.content

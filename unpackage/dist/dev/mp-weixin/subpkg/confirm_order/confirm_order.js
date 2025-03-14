@@ -298,9 +298,9 @@ var _default = {
       var _this2 = this;
       uni.showModal({
         title: '添加备注',
-        content: '请输入特殊要求',
+        content: '',
         editable: true,
-        placeholderText: '如少糖、少冰等',
+        placeholderText: '请输入特殊要求: 如少糖、少冰等',
         success: function success(res) {
           if (res.confirm && res.content) {
             _this2.remark = res.content;

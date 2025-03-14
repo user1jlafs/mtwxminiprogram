@@ -157,6 +157,10 @@ var _default = {
     products: {
       type: Array,
       required: true
+    },
+    remark: {
+      type: String,
+      default: ''
     }
   },
   methods: {

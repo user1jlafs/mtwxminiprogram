@@ -28,7 +28,8 @@
       <view class="remark-header" @tap="showRemarkPopup">
         <view class="remark-left">
           <uni-icons type="compose" size="16" color="#8B5A2B"></uni-icons>
-          <text>备注特殊要求</text>
+          <text v-if="!remark">备注特殊要求</text>
+          <text v-else> {{ remark }}</text>
         </view>
         <uni-icons type="right" size="14" color="#C39B77"></uni-icons>
       </view>
@@ -49,6 +50,10 @@ export default {
     products: {
       type: Array,
       required: true
+    },
+    remark: {
+      type: String,
+      default: ''
     }
   },
   methods: {
