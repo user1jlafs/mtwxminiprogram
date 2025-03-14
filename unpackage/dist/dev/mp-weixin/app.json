@@ -12,7 +12,8 @@
         "goods_spec/goods_spec",
         "confirm_order/confirm_order",
         "search/search",
-        "user_info/user_info"
+        "user_info/user_info",
+        "order_detail/order_detail"
       ]
     }
   ],

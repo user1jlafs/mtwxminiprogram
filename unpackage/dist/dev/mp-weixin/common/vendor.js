@@ -11608,7 +11608,7 @@ var http = new _luchRequest.default();
 // 全局配置
 http.setConfig(function (config) {
   /* config 为默认全局配置*/
-  config.baseURL = 'http://localhost:3000'; /* 根域名 */
+  config.baseURL = 'http://100.2.232.4:3000'; /* 根域名 */
   config.timeout = 5000;
   return config;
 });
@@ -11624,7 +11624,7 @@ http.interceptors.request.use(function (config) {
 
 // 响应拦截
 http.interceptors.response.use(function (res) {
-  if (res.statusCode !== 200) throw new Error('请求失败');
+  // if (res.statusCode !== 200) throw new Error('请求失败')
   return res.data;
 }, function (error) {
   // 处理响应错误
@@ -14913,12 +14913,9 @@ Object.defineProperty(exports, "__esModule", {
 exports.CancelOrderRequest = CancelOrderRequest;
 exports.ConfirmOrderRequest = ConfirmOrderRequest;
 exports.CreateOrderRequest = CreateOrderRequest;
-exports.DeleteOrderRequest = DeleteOrderRequest;
-exports.GetAllOrderListRequest = GetAllOrderListRequest;
 exports.GetUserOrderDetailRequest = GetUserOrderDetailRequest;
 exports.GetUserOrderListRequest = GetUserOrderListRequest;
 exports.PayOrderRequest = PayOrderRequest;
-exports.UpdateOrderStatusRequest = UpdateOrderStatusRequest;
 var _request = _interopRequireDefault(__webpack_require__(/*! @/utils/request */ 47));
 // 创建订单
 function CreateOrderRequest(obj) {
@@ -14926,7 +14923,8 @@ function CreateOrderRequest(obj) {
 }
 // 获取用户订单列表
 function GetUserOrderListRequest() {
-  return _request.default.get('/api/orders');
+  var status = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  return _request.default.get("/api/orders?status=".concat(status));
 }
 // 获取订单详情
 function GetUserOrderDetailRequest(orderId) {
@@ -14943,22 +14941,6 @@ function PayOrderRequest(orderId) {
 // 确认收货
 function ConfirmOrderRequest(orderId) {
   return _request.default.put("/api/orders/".concat(orderId, "/receive"));
-}
-// 管理员获取所有订单
-function GetAllOrderListRequest(obj) {
-  return _request.default.get('/api/orders/admin/all', {
-    params: obj
-  });
-}
-// 管理员更新订单状态
-function UpdateOrderStatusRequest(orderId, status) {
-  return _request.default.put("/api/orders/admin/".concat(orderId, "/status"), {
-    status: status
-  });
-}
-// 管理员删除订单
-function DeleteOrderRequest(orderId) {
-  return _request.default.delete("/api/orders/admin/".concat(orderId));
 }
 
 /***/ }),
@@ -19666,8 +19648,53 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var _typeof = __webpack_require__(/*! @babel/r
 /* 107 */,
 /* 108 */,
 /* 109 */,
-/* 110 */,
-/* 111 */,
+/* 110 */
+/*!**************************************************************!*\
+  !*** D:/MilkTeaProject/milkteawxprogram/mixins/dateMixin.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _dateFormat = __webpack_require__(/*! @/utils/dateFormat.js */ 111);
+var _default = {
+  methods: {
+    formatDate: function formatDate(dateString) {
+      return (0, _dateFormat.formatDate)(dateString);
+    }
+  }
+};
+exports.default = _default;
+
+/***/ }),
+/* 111 */
+/*!**************************************************************!*\
+  !*** D:/MilkTeaProject/milkteawxprogram/utils/dateFormat.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.formatDate = formatDate;
+// 格式化日期
+function formatDate(dateString) {
+  if (!dateString) return '';
+  var date = new Date(dateString);
+  return "".concat(date.getFullYear(), "-").concat(String(date.getMonth() + 1).padStart(2, '0'), "-").concat(String(date.getDate()).padStart(2, '0'), " ").concat(String(date.getHours()).padStart(2, '0'), ":").concat(String(date.getMinutes()).padStart(2, '0'));
+}
+
+/***/ }),
 /* 112 */,
 /* 113 */,
 /* 114 */,
@@ -20276,14 +20303,7 @@ function GetUserInfoRequest() {
 /* 186 */,
 /* 187 */,
 /* 188 */,
-/* 189 */,
-/* 190 */,
-/* 191 */,
-/* 192 */,
-/* 193 */,
-/* 194 */,
-/* 195 */,
-/* 196 */
+/* 189 */
 /*!*************************************************************************************************************!*\
   !*** D:/MilkTeaProject/milkteawxprogram/uni_modules/uni-search-bar/components/uni-search-bar/i18n/index.js ***!
   \*************************************************************************************************************/
@@ -20298,9 +20318,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _en = _interopRequireDefault(__webpack_require__(/*! ./en.json */ 197));
-var _zhHans = _interopRequireDefault(__webpack_require__(/*! ./zh-Hans.json */ 198));
-var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 199));
+var _en = _interopRequireDefault(__webpack_require__(/*! ./en.json */ 190));
+var _zhHans = _interopRequireDefault(__webpack_require__(/*! ./zh-Hans.json */ 191));
+var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 192));
 var _default = {
   en: _en.default,
   'zh-Hans': _zhHans.default,
@@ -20309,7 +20329,7 @@ var _default = {
 exports.default = _default;
 
 /***/ }),
-/* 197 */
+/* 190 */
 /*!************************************************************************************************************!*\
   !*** D:/MilkTeaProject/milkteawxprogram/uni_modules/uni-search-bar/components/uni-search-bar/i18n/en.json ***!
   \************************************************************************************************************/
@@ -20319,7 +20339,7 @@ exports.default = _default;
 module.exports = JSON.parse("{\"uni-search-bar.cancel\":\"cancel\",\"uni-search-bar.placeholder\":\"Search enter content\"}");
 
 /***/ }),
-/* 198 */
+/* 191 */
 /*!*****************************************************************************************************************!*\
   !*** D:/MilkTeaProject/milkteawxprogram/uni_modules/uni-search-bar/components/uni-search-bar/i18n/zh-Hans.json ***!
   \*****************************************************************************************************************/
@@ -20329,7 +20349,7 @@ module.exports = JSON.parse("{\"uni-search-bar.cancel\":\"cancel\",\"uni-search-
 module.exports = JSON.parse("{\"uni-search-bar.cancel\":\"取消\",\"uni-search-bar.placeholder\":\"请输入搜索内容\"}");
 
 /***/ }),
-/* 199 */
+/* 192 */
 /*!*****************************************************************************************************************!*\
   !*** D:/MilkTeaProject/milkteawxprogram/uni_modules/uni-search-bar/components/uni-search-bar/i18n/zh-Hant.json ***!
   \*****************************************************************************************************************/

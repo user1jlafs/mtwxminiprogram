@@ -104,15 +104,6 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var g0 = _vm.pickupMethod === "delivery" ? _vm.savedAddresses.length : null
-  _vm.$mp.data = Object.assign(
-    {},
-    {
-      $root: {
-        g0: g0,
-      },
-    }
-  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -146,7 +137,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(uni) {
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -154,50 +145,44 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var SectionTitle = function SectionTitle() {
   __webpack_require__.e(/*! require.ensure | components/order/SectionTitle */ "components/order/SectionTitle").then((function () {
-    return resolve(__webpack_require__(/*! ./SectionTitle.vue */ 202));
+    return resolve(__webpack_require__(/*! ./SectionTitle.vue */ 195));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
-var _default2 = {
+var _default = {
   name: 'DeliveryAddress',
   components: {
     SectionTitle: SectionTitle
   },
   props: {
-    pickupMethod: {
-      type: String,
-      required: true
-    },
-    savedAddresses: {
-      type: Array,
-      default: function _default() {
-        return [];
-      }
-    },
-    selectedAddress: {
+    address: {
       type: Object,
       default: null
-    },
-    addressForm: {
-      type: Object,
-      required: true
     }
   },
   methods: {
-    selectPickupMethod: function selectPickupMethod(method) {
-      this.$emit('update:pickupMethod', method);
-    },
-    showAddressList: function showAddressList() {
-      this.$emit('show-address-list');
-    },
-    showRegionPicker: function showRegionPicker() {
-      this.$emit('show-region-picker');
-    },
-    toggleDefaultAddress: function toggleDefaultAddress(e) {
-      this.$emit('toggle-default-address', e);
+    chooseAddress: function chooseAddress() {
+      var _this = this;
+      // 调用微信小程序的收货地址API
+      uni.chooseAddress({
+        success: function success(res) {
+          // 将选择的地址信息传递给父组件
+          _this.$emit('address-selected', {
+            userName: res.userName,
+            telNumber: res.telNumber,
+            provinceName: res.provinceName,
+            cityName: res.cityName,
+            countyName: res.countyName,
+            detailInfo: res.detailInfo,
+            postalCode: res.postalCode,
+            nationalCode: res.nationalCode
+          });
+        }
+      });
     }
   }
 };
-exports.default = _default2;
+exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
 
 /***/ }),
 

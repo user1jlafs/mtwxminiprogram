@@ -4,5 +4,18 @@
   "setting": {
     "compileHotReLoad": true
   },
-  "libVersion": "2.20.3"
+  "libVersion": "2.20.3",
+  "condition": {
+    "miniprogram": {
+      "list": [
+        {
+          "name": "subpkg/order_detail/order_detail",
+          "pathName": "subpkg/order_detail/order_detail",
+          "query": "id=21",
+          "launchMode": "default",
+          "scene": null
+        }
+      ]
+    }
+  }
 }

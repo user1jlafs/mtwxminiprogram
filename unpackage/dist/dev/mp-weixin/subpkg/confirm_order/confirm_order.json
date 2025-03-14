@@ -4,7 +4,6 @@
     "delivery-address": "/components/order/DeliveryAddress",
     "product-list": "/components/order/ProductList",
     "payment-method": "/components/order/PaymentMethod",
-    "pickup-method": "/components/order/PickupMethod",
     "order-footer": "/components/order/OrderFooter"
   }
 }

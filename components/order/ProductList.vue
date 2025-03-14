@@ -33,14 +33,7 @@
         <uni-icons type="right" size="14" color="#C39B77"></uni-icons>
       </view>
     </view>
-    
-    <!-- 温馨提示 -->
-    <view class="tips-section">
-      <view class="tips-icon">
-        <uni-icons type="info" size="16" color="#C39B77"></uni-icons>
-      </view>
-      <text class="tips-text">温馨提示：建议收到高温量，社交距离，本店仅支持电子支付，订单完成后可前往发票管理中开具。</text>
-    </view>
+
   </view>
 </template>
 
@@ -188,24 +181,5 @@ export default {
   }
 }
 
-/* 温馨提示 */
-.tips-section {
-  display: flex;
-  background-color: #FFF8F0; // 奶茶背景色
-  padding: 15rpx;
-  border-radius: 10rpx;
-  align-items: flex-start;
-}
-
-.tips-icon {
-  margin-right: 8rpx;
-  margin-top: 4rpx;
-}
-
-.tips-text {
-  font-size: 24rpx;
-  color: #C39B77; // 浅奶茶色
-  line-height: 1.5;
-  flex: 1;
-}
+/* 已移除温馨提示相关样式 */
 </style>

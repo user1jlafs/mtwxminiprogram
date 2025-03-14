@@ -41,24 +41,26 @@
           
           <!-- 订单商品 -->
           <view class="order-products">
-            <view class="product-item" v-for="(product, pIndex) in order.products" :key="pIndex">
-              <image class="product-image" :src="product.image" mode="aspectFill"></image>
+            <view class="product-item" v-for="(product, pIndex) in order.orderItems" :key="pIndex">
+              <image class="product-image" :src="product.product.image" mode="aspectFill"></image>
               <view class="product-info">
-                <text class="product-name">{{product.name}}</text>
-                <text class="product-spec">{{product.specification}}</text>
+                <text class="product-name">{{product.product.name}}</text>
+                <view class="product-specs">
+                  <text class="product-spec" v-for="spec in product.specValues" :key="spec.id">{{spec.value}}</text>
+                </view>
               </view>
               <view class="product-price">
                 <text class="price">¥{{product.price}}</text>
-                <text class="count">x{{product.count}}</text>
+                <text class="count">x{{product.quantity}}</text>
               </view>
             </view>
           </view>
           
           <!-- 订单汇总 -->
           <view class="order-summary">
-            <text class="order-time">{{order.createTime}}</text>
+            <text class="order-time">{{formatDate(order.createdAt)}}</text>
             <view class="order-total">
-              <text class="total-count">共{{getTotalCount(order.products)}}件商品</text>
+              <text class="total-count">共{{getTotalCount(order.orderItems)}}件商品</text>
               <text class="total-price">合计：¥{{order.totalAmount}}</text>
             </view>
           </view>
@@ -67,22 +69,22 @@
           <view class="order-actions">
             <view class="action-btns">
               <button 
-                v-if="order.status === 0" 
+                v-if="order.status === 'pending'" 
                 class="btn btn-cancel"
                 @tap.stop="cancelOrder(order.id)"
               >取消订单</button>
               <button 
-                v-if="order.status === 0" 
+                v-if="order.status === 'pending'" 
                 class="btn btn-primary"
                 @tap.stop="payOrder(order.id)"
               >去支付</button>
               <button 
-                v-if="order.status === 1" 
+                v-if="order.status === 'shipping'" 
                 class="btn btn-primary"
                 @tap.stop="confirmOrder(order.id)"
               >确认收货</button>
               <button 
-                v-if="order.status === 2" 
+                v-if="order.status === 'completed'" 
                 class="btn btn-default"
                 @tap.stop="viewOrderDetail(order.id)"
               >查看详情</button>
@@ -102,110 +104,71 @@
 
 <script>
 import { GetUserOrderListRequest, CancelOrderRequest, PayOrderRequest, ConfirmOrderRequest } from '@/api/OrderRequest'
+import dateMixin from '@/mixins/dateMixin'
 
 export default {
+  mixins: [dateMixin],
   data() {
     return {
       statusBarHeight: 0,
       currentTab: 0,
       tabs: [
-        { name: '全部', status: -1 },
-        { name: '待付款', status: 0 },
-        { name: '待取餐', status: 1 },
-        { name: '已完成', status: 2 }
+        { name: '全部', status: '' },
+        { name: '待付款', status: 'pending' },
+        { name: '已完成', status: 'completed' },
+        { name: '已取消', status: 'cancelled' }
       ],
-      // 测试数据
-      orderList: [
-        {
-          id: '1001',
-          status: 0, // 0-待付款，1-待取餐，2-已完成
-          createTime: '2023-06-15 14:30',
-          totalAmount: 25.5,
-          products: [
-            {
-              id: '1',
-              name: '珍珠奶茶',
-              specification: '中杯/少冰/半糖',
-              price: 12.5,
-              count: 1,
-              image: '/static/c1.png'
-            },
-            {
-              id: '2',
-              name: '芒果冰沙',
-              specification: '大杯/正常冰/正常糖',
-              price: 13,
-              count: 1,
-              image: '/static/c2.png'
-            }
-          ]
-        },
-        {
-          id: '1002',
-          status: 1,
-          createTime: '2023-06-14 18:20',
-          totalAmount: 18,
-          products: [
-            {
-              id: '3',
-              name: '草莓奶昔',
-              specification: '大杯/少冰/正常糖',
-              price: 18,
-              count: 1,
-              image: '/static/c3.png'
-            }
-          ]
-        },
-        {
-          id: '1003',
-          status: 2,
-          createTime: '2023-06-10 12:15',
-          totalAmount: 36,
-          products: [
-            {
-              id: '4',
-              name: '抹茶拿铁',
-              specification: '中杯/正常冰/正常糖',
-              price: 18,
-              count: 2,
-              image: '/static/c4.png'
-            }
-          ]
-        }
-      ]
+      // 订单数据
+      orderList: []
     }
+  },
+  onShow () {
+    this.isLogin()
+    // 调用接口获取订单数据
+    this.getOrderList()
   },
   onLoad() {
     // 获取状态栏高度
-    const systemInfo = uni.getSystemInfoSync();
-    this.statusBarHeight = systemInfo.statusBarHeight;
-    
-    // 实际项目中应该调用接口获取订单数据
-    // this.getOrderList();
+    const systemInfo = uni.getSystemInfoSync()
+    this.statusBarHeight = systemInfo.statusBarHeight
   },
   methods: {
+    isLogin () {
+      // 判断是否登录
+      const token = uni.getStorageSync('token')
+      if (!token) {
+        uni.showModal({
+          title: '提示',
+          content: '请先登录',
+          showCancel: false,
+          success: () => {
+            uni.switchTab({
+              url: '/pages/my/my'
+            })
+          }
+        })
+        return
+      }
+    },
+
     // 切换选项卡
     switchTab(index) {
-      this.currentTab = index;
-      // 实际项目中应该根据选项卡状态筛选订单
-      // this.getOrderList(this.tabs[index].status);
+      this.currentTab = index
+      // 根据选项卡状态筛选订单
+      this.getOrderList(this.tabs[index].status)
     },
     
     // 获取订单列表
-    async getOrderList(status = -1) {
+    async getOrderList(status) {
       try {
-        const res = await GetUserOrderListRequest();
-        if (status === -1) {
-          this.orderList = res.data;
-        } else {
-          this.orderList = res.data.filter(order => order.status === status);
-        }
+        const res = await GetUserOrderListRequest(status)
+        this.orderList = res
       } catch (error) {
-        console.error('获取订单列表失败', error);
+        console.error('获取订单列表失败', error)
         uni.showToast({
           title: '获取订单列表失败',
           icon: 'none'
-        });
+        })
       }
     },
     
@@ -213,83 +176,111 @@ export default {
     viewOrderDetail(orderId) {
       uni.navigateTo({
         url: `/subpkg/order_detail/order_detail?id=${orderId}`
-      });
+      })
     },
     
     // 取消订单
     async cancelOrder(orderId) {
       try {
-        await CancelOrderRequest(orderId);
+        await CancelOrderRequest(orderId)
         uni.showToast({
           title: '订单已取消',
           icon: 'success'
-        });
+        })
         // 刷新订单列表
-        // this.getOrderList(this.tabs[this.currentTab].status);
+        this.getOrderList(this.tabs[this.currentTab].status)
       } catch (error) {
-        console.error('取消订单失败', error);
+        console.error('取消订单失败', error)
         uni.showToast({
           title: '取消订单失败',
           icon: 'none'
-        });
+        })
       }
     },
     
     // 支付订单
     async payOrder(orderId) {
       try {
-        await PayOrderRequest(orderId);
-        uni.showToast({
-          title: '支付成功',
-          icon: 'success'
-        });
-        // 刷新订单列表
-        // this.getOrderList(this.tabs[this.currentTab].status);
+        uni.showModal({
+        	title: '温馨提示',
+        	content: '你确定要支付吗',
+        	success: async res => {
+        		if (res.confirm) {
+              await PayOrderRequest(orderId)
+              uni.showToast({
+                title: '支付成功',
+                icon: 'success'
+              })
+              // 刷新订单列表
+              this.getOrderList(this.tabs[this.currentTab].status)
+        		} else if (res.cancel) {
+        			uni.showToast({
+                title: '取消支付',
+                icon: 'none'
+              })
+        		}
+        	}
+        })
       } catch (error) {
-        console.error('支付失败', error);
+        console.error('支付失败', error)
         uni.showToast({
           title: '支付失败',
           icon: 'none'
-        });
+        })
       }
     },
     
     // 确认收货
     async confirmOrder(orderId) {
       try {
-        await ConfirmOrderRequest(orderId);
-        uni.showToast({
-          title: '已确认收货',
-          icon: 'success'
-        });
-        // 刷新订单列表
-        // this.getOrderList(this.tabs[this.currentTab].status);
+        uni.showModal({
+        	title: '温馨提示',
+        	content: '您确定要收货吗?',
+        	success: async res => {
+        		if (res.confirm) {
+        			await ConfirmOrderRequest(orderId)
+              uni.showToast({
+                title: '已确认收货',
+                icon: 'success'
+              })
+              // 刷新订单列表
+              this.getOrderList(this.tabs[this.currentTab].status)
+        		} else if (res.cancel) {
+        		}
+        	}
+        })
       } catch (error) {
-        console.error('确认收货失败', error);
+        console.error('确认收货失败', error)
         uni.showToast({
           title: '确认收货失败',
           icon: 'none'
-        });
+        })
       }
     },
     
     // 获取订单状态文本
     getStatusText(status) {
       switch (status) {
-        case 0:
-          return '待付款';
-        case 1:
-          return '待取餐';
-        case 2:
-          return '已完成';
+        case 'pending':
+          return '待付款'
+        case 'paid':
+          return '已支付'
+        case 'preparing':
+          return '备餐中'
+        case 'shipped':
+          return '配送中'
+        case 'completed':
+          return '已完成'
+        case 'cancelled':
+          return '已取消'
         default:
-          return '未知状态';
+          return '未知状态'
       }
     },
     
     // 计算商品总数
     getTotalCount(products) {
-      return products.reduce((total, product) => total + product.count, 0);
+      return products.reduce((total, item) => total + item.quantity, 0)
     }
   }
 }
@@ -459,6 +450,12 @@ export default {
   color: #333333;
   margin-bottom: 6px;
   font-weight: 500; // 稍微加粗
+}
+
+.product-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 
 .product-spec {

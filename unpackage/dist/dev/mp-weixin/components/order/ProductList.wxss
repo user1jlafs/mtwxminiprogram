@@ -103,22 +103,5 @@
   color: #333333;
   margin-left: 8rpx;
 }
-/* 温馨提示 */
-.tips-section {
-  display: flex;
-  background-color: #FFF8F0;
-  padding: 15rpx;
-  border-radius: 10rpx;
-  align-items: flex-start;
-}
-.tips-icon {
-  margin-right: 8rpx;
-  margin-top: 4rpx;
-}
-.tips-text {
-  font-size: 24rpx;
-  color: #C39B77;
-  line-height: 1.5;
-  flex: 1;
-}
+/* 已移除温馨提示相关样式 */
 

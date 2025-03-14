@@ -131,11 +131,13 @@ var render = function () {
       ? _vm.__map(_vm.orderList, function (order, index) {
           var $orig = _vm.__get_orig(order)
           var m0 = _vm.getStatusText(order.status)
-          var m1 = _vm.getTotalCount(order.products)
+          var m1 = _vm.formatDate(order.createdAt)
+          var m2 = _vm.getTotalCount(order.orderItems)
           return {
             $orig: $orig,
             m0: m0,
             m1: m1,
+            m2: m2,
           }
         })
       : null
@@ -191,6 +193,9 @@ exports.default = void 0;
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ 43));
 var _asyncToGenerator2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ 45));
 var _OrderRequest = __webpack_require__(/*! @/api/OrderRequest */ 83);
+var _dateMixin = _interopRequireDefault(__webpack_require__(/*! @/mixins/dateMixin */ 110));
+//
+//
 //
 //
 //
@@ -294,129 +299,93 @@ var _OrderRequest = __webpack_require__(/*! @/api/OrderRequest */ 83);
 //
 //
 var _default = {
+  mixins: [_dateMixin.default],
   data: function data() {
     return {
       statusBarHeight: 0,
       currentTab: 0,
       tabs: [{
         name: '全部',
-        status: -1
+        status: ''
       }, {
         name: '待付款',
-        status: 0
-      }, {
-        name: '待取餐',
-        status: 1
+        status: 'pending'
       }, {
         name: '已完成',
-        status: 2
+        status: 'completed'
+      }, {
+        name: '已取消',
+        status: 'cancelled'
       }],
-      // 测试数据
-      orderList: [{
-        id: '1001',
-        status: 0,
-        // 0-待付款，1-待取餐，2-已完成
-        createTime: '2023-06-15 14:30',
-        totalAmount: 25.5,
-        products: [{
-          id: '1',
-          name: '珍珠奶茶',
-          specification: '中杯/少冰/半糖',
-          price: 12.5,
-          count: 1,
-          image: '/static/c1.png'
-        }, {
-          id: '2',
-          name: '芒果冰沙',
-          specification: '大杯/正常冰/正常糖',
-          price: 13,
-          count: 1,
-          image: '/static/c2.png'
-        }]
-      }, {
-        id: '1002',
-        status: 1,
-        createTime: '2023-06-14 18:20',
-        totalAmount: 18,
-        products: [{
-          id: '3',
-          name: '草莓奶昔',
-          specification: '大杯/少冰/正常糖',
-          price: 18,
-          count: 1,
-          image: '/static/c3.png'
-        }]
-      }, {
-        id: '1003',
-        status: 2,
-        createTime: '2023-06-10 12:15',
-        totalAmount: 36,
-        products: [{
-          id: '4',
-          name: '抹茶拿铁',
-          specification: '中杯/正常冰/正常糖',
-          price: 18,
-          count: 2,
-          image: '/static/c4.png'
-        }]
-      }]
+      // 订单数据
+      orderList: []
     };
+  },
+  onShow: function onShow() {
+    this.isLogin();
+    // 调用接口获取订单数据
+    this.getOrderList();
   },
   onLoad: function onLoad() {
     // 获取状态栏高度
     var systemInfo = uni.getSystemInfoSync();
     this.statusBarHeight = systemInfo.statusBarHeight;
-
-    // 实际项目中应该调用接口获取订单数据
-    // this.getOrderList();
   },
-
   methods: {
+    isLogin: function isLogin() {
+      // 判断是否登录
+      var token = uni.getStorageSync('token');
+      if (!token) {
+        uni.showModal({
+          title: '提示',
+          content: '请先登录',
+          showCancel: false,
+          success: function success() {
+            uni.switchTab({
+              url: '/pages/my/my'
+            });
+          }
+        });
+        return;
+      }
+    },
     // 切换选项卡
     switchTab: function switchTab(index) {
       this.currentTab = index;
-      // 实际项目中应该根据选项卡状态筛选订单
-      // this.getOrderList(this.tabs[index].status);
+      // 根据选项卡状态筛选订单
+      this.getOrderList(this.tabs[index].status);
     },
     // 获取订单列表
-    getOrderList: function getOrderList() {
-      var _arguments = arguments,
-        _this = this;
+    getOrderList: function getOrderList(status) {
+      var _this = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
-        var status, res;
+        var res;
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                status = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : -1;
-                _context.prev = 1;
-                _context.next = 4;
-                return (0, _OrderRequest.GetUserOrderListRequest)();
-              case 4:
+                _context.prev = 0;
+                _context.next = 3;
+                return (0, _OrderRequest.GetUserOrderListRequest)(status);
+              case 3:
                 res = _context.sent;
-                if (status === -1) {
-                  _this.orderList = res.data;
-                } else {
-                  _this.orderList = res.data.filter(function (order) {
-                    return order.status === status;
-                  });
-                }
-                _context.next = 12;
+                _this.orderList = res;
+                _context.next = 11;
                 break;
-              case 8:
-                _context.prev = 8;
-                _context.t0 = _context["catch"](1);
+              case 7:
+                _context.prev = 7;
+                _context.t0 = _context["catch"](0);
                 console.error('获取订单列表失败', _context.t0);
                 uni.showToast({
                   title: '获取订单列表失败',
                   icon: 'none'
                 });
-              case 12:
+              case 11:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[1, 8]]);
+        }, _callee, null, [[0, 7]]);
       }))();
     },
     // 查看订单详情
@@ -427,6 +396,7 @@ var _default = {
     },
     // 取消订单
     cancelOrder: function cancelOrder(orderId) {
+      var _this2 = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
         return _regenerator.default.wrap(function _callee2$(_context2) {
           while (1) {
@@ -441,112 +411,179 @@ var _default = {
                   icon: 'success'
                 });
                 // 刷新订单列表
-                // this.getOrderList(this.tabs[this.currentTab].status);
-                _context2.next = 10;
+                _this2.getOrderList(_this2.tabs[_this2.currentTab].status);
+                _context2.next = 11;
                 break;
-              case 6:
-                _context2.prev = 6;
+              case 7:
+                _context2.prev = 7;
                 _context2.t0 = _context2["catch"](0);
                 console.error('取消订单失败', _context2.t0);
                 uni.showToast({
                   title: '取消订单失败',
                   icon: 'none'
                 });
-              case 10:
+              case 11:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[0, 6]]);
+        }, _callee2, null, [[0, 7]]);
       }))();
     },
     // 支付订单
     payOrder: function payOrder(orderId) {
-      return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3() {
-        return _regenerator.default.wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                _context3.prev = 0;
-                _context3.next = 3;
-                return (0, _OrderRequest.PayOrderRequest)(orderId);
-              case 3:
-                uni.showToast({
-                  title: '支付成功',
-                  icon: 'success'
-                });
-                // 刷新订单列表
-                // this.getOrderList(this.tabs[this.currentTab].status);
-                _context3.next = 10;
-                break;
-              case 6:
-                _context3.prev = 6;
-                _context3.t0 = _context3["catch"](0);
-                console.error('支付失败', _context3.t0);
-                uni.showToast({
-                  title: '支付失败',
-                  icon: 'none'
-                });
-              case 10:
-              case "end":
-                return _context3.stop();
-            }
-          }
-        }, _callee3, null, [[0, 6]]);
-      }))();
-    },
-    // 确认收货
-    confirmOrder: function confirmOrder(orderId) {
+      var _this3 = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee4() {
         return _regenerator.default.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                _context4.prev = 0;
-                _context4.next = 3;
-                return (0, _OrderRequest.ConfirmOrderRequest)(orderId);
-              case 3:
-                uni.showToast({
-                  title: '已确认收货',
-                  icon: 'success'
-                });
-                // 刷新订单列表
-                // this.getOrderList(this.tabs[this.currentTab].status);
-                _context4.next = 10;
-                break;
-              case 6:
-                _context4.prev = 6;
-                _context4.t0 = _context4["catch"](0);
-                console.error('确认收货失败', _context4.t0);
-                uni.showToast({
-                  title: '确认收货失败',
-                  icon: 'none'
-                });
-              case 10:
+                try {
+                  uni.showModal({
+                    title: '温馨提示',
+                    content: '你确定要支付吗',
+                    success: function () {
+                      var _success = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee3(res) {
+                        return _regenerator.default.wrap(function _callee3$(_context3) {
+                          while (1) {
+                            switch (_context3.prev = _context3.next) {
+                              case 0:
+                                if (!res.confirm) {
+                                  _context3.next = 7;
+                                  break;
+                                }
+                                _context3.next = 3;
+                                return (0, _OrderRequest.PayOrderRequest)(orderId);
+                              case 3:
+                                uni.showToast({
+                                  title: '支付成功',
+                                  icon: 'success'
+                                });
+                                // 刷新订单列表
+                                _this3.getOrderList(_this3.tabs[_this3.currentTab].status);
+                                _context3.next = 8;
+                                break;
+                              case 7:
+                                if (res.cancel) {
+                                  uni.showToast({
+                                    title: '取消支付',
+                                    icon: 'none'
+                                  });
+                                }
+                              case 8:
+                              case "end":
+                                return _context3.stop();
+                            }
+                          }
+                        }, _callee3);
+                      }));
+                      function success(_x) {
+                        return _success.apply(this, arguments);
+                      }
+                      return success;
+                    }()
+                  });
+                } catch (error) {
+                  console.error('支付失败', error);
+                  uni.showToast({
+                    title: '支付失败',
+                    icon: 'none'
+                  });
+                }
+              case 1:
               case "end":
                 return _context4.stop();
             }
           }
-        }, _callee4, null, [[0, 6]]);
+        }, _callee4);
+      }))();
+    },
+    // 确认收货
+    confirmOrder: function confirmOrder(orderId) {
+      var _this4 = this;
+      return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee6() {
+        return _regenerator.default.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                try {
+                  uni.showModal({
+                    title: '温馨提示',
+                    content: '您确定要收货吗?',
+                    success: function () {
+                      var _success2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee5(res) {
+                        return _regenerator.default.wrap(function _callee5$(_context5) {
+                          while (1) {
+                            switch (_context5.prev = _context5.next) {
+                              case 0:
+                                if (!res.confirm) {
+                                  _context5.next = 7;
+                                  break;
+                                }
+                                _context5.next = 3;
+                                return (0, _OrderRequest.ConfirmOrderRequest)(orderId);
+                              case 3:
+                                uni.showToast({
+                                  title: '已确认收货',
+                                  icon: 'success'
+                                });
+                                // 刷新订单列表
+                                _this4.getOrderList(_this4.tabs[_this4.currentTab].status);
+                                _context5.next = 8;
+                                break;
+                              case 7:
+                                if (res.cancel) {}
+                              case 8:
+                              case "end":
+                                return _context5.stop();
+                            }
+                          }
+                        }, _callee5);
+                      }));
+                      function success(_x2) {
+                        return _success2.apply(this, arguments);
+                      }
+                      return success;
+                    }()
+                  });
+                } catch (error) {
+                  console.error('确认收货失败', error);
+                  uni.showToast({
+                    title: '确认收货失败',
+                    icon: 'none'
+                  });
+                }
+              case 1:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6);
       }))();
     },
     // 获取订单状态文本
     getStatusText: function getStatusText(status) {
       switch (status) {
-        case 0:
+        case 'pending':
           return '待付款';
-        case 1:
-          return '待取餐';
-        case 2:
+        case 'paid':
+          return '已支付';
+        case 'preparing':
+          return '备餐中';
+        case 'shipped':
+          return '配送中';
+        case 'completed':
           return '已完成';
+        case 'cancelled':
+          return '已取消';
         default:
           return '未知状态';
       }
     },
     // 计算商品总数
     getTotalCount: function getTotalCount(products) {
-      return products.reduce(function (total, product) {
-        return total + product.count;
+      return products.reduce(function (total, item) {
+        return total + item.quantity;
       }, 0);
     }
   }

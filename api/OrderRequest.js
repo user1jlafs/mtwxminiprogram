@@ -5,8 +5,8 @@ export function CreateOrderRequest (obj) {
   return request.post('/api/orders', obj)
 }
 // 获取用户订单列表
-export function GetUserOrderListRequest () {
-  return request.get('/api/orders')
+export function GetUserOrderListRequest (status = '') {
+  return request.get(`/api/orders?status=${status}`)
 }
 // 获取订单详情
 export function GetUserOrderDetailRequest (orderId) {
@@ -23,16 +23,4 @@ export function PayOrderRequest (orderId) {
 // 确认收货
 export function ConfirmOrderRequest (orderId) {
   return request.put(`/api/orders/${orderId}/receive`)
-}
-// 管理员获取所有订单
-export function GetAllOrderListRequest (obj) {
-  return request.get('/api/orders/admin/all', { params: obj })
-}
-// 管理员更新订单状态
-export function UpdateOrderStatusRequest (orderId, status) {
-  return request.put(`/api/orders/admin/${orderId}/status`, { status })
-}
-// 管理员删除订单
-export function DeleteOrderRequest (orderId) {
-  return request.delete(`/api/orders/admin/${orderId}`)
 }

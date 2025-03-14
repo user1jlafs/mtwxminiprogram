@@ -56,6 +56,12 @@
 					"style": {
 						"navigationBarTitleText": "填写用户信息"
 					}
+				},
+				{
+					"path" : "order_detail/order_detail",
+					"style": {
+						"navigationBarTitleText": "订单详情"
+					}
 				}
 			]
     }

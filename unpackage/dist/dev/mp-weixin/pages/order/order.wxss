@@ -146,6 +146,11 @@
   margin-bottom: 6px;
   font-weight: 500;
 }
+.product-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
 .product-spec {
   font-size: 12px;
   color: #999999;
