@@ -238,7 +238,7 @@ export default {
     async getCategoryList () {
       const products = []
       try {
-        const categories = await GetAllCategoryListRequest()
+        const { categories } = await GetAllCategoryListRequest()
         for (const category of categories) {
           products.push(...category.products)
         }

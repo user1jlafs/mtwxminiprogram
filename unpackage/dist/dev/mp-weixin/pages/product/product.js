@@ -101,7 +101,7 @@ var components
 try {
   components = {
     uniIcons: function () {
-      return Promise.all(/*! import() | uni_modules/uni-icons/components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 126))
+      return Promise.all(/*! import() | uni_modules/uni-icons/components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-icons/components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-icons/components/uni-icons/uni-icons.vue */ 134))
     },
   }
 } catch (e) {
@@ -174,7 +174,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 var cartComponent = function cartComponent() {
   Promise.all(/*! require.ensure | components/cartComponent */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/cartComponent")]).then((function () {
-    return resolve(__webpack_require__(/*! @/components/cartComponent */ 134));
+    return resolve(__webpack_require__(/*! @/components/cartComponent */ 142));
   }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
 };
 var _default = {
@@ -343,7 +343,7 @@ var _default = {
     getCategoryList: function getCategoryList() {
       var _this5 = this;
       return (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
-        var products, categories, _iterator, _step, category;
+        var products, _yield$GetAllCategory, categories, _iterator, _step, category;
         return _regenerator.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -353,7 +353,8 @@ var _default = {
                 _context.next = 4;
                 return (0, _CategoryRequest.GetAllCategoryListRequest)();
               case 4:
-                categories = _context.sent;
+                _yield$GetAllCategory = _context.sent;
+                categories = _yield$GetAllCategory.categories;
                 _iterator = _createForOfIteratorHelper(categories);
                 try {
                   for (_iterator.s(); !(_step = _iterator.n()).done;) {
@@ -367,18 +368,18 @@ var _default = {
                 }
                 _this5.categories = categories;
                 _this5.products = products;
-                _context.next = 14;
+                _context.next = 15;
                 break;
-              case 11:
-                _context.prev = 11;
+              case 12:
+                _context.prev = 12;
                 _context.t0 = _context["catch"](1);
                 console.error(_context.t0);
-              case 14:
+              case 15:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[1, 11]]);
+        }, _callee, null, [[1, 12]]);
       }))();
     },
     // 跳转至商品规格选择页面

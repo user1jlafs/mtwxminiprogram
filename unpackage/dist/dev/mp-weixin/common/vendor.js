@@ -14854,37 +14854,13 @@ var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/inte
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CreateCategoryRequest = CreateCategoryRequest;
-exports.DeleteCategoryRequest = DeleteCategoryRequest;
 exports.GetAllCategoryListRequest = GetAllCategoryListRequest;
-exports.GetCategoryListRequest = GetCategoryListRequest;
-exports.UpdateCategoryRequest = UpdateCategoryRequest;
 var _request = _interopRequireDefault(__webpack_require__(/*! @/utils/request */ 47));
 // 获取所有分类列表
 function GetAllCategoryListRequest() {
-  return _request.default.get('/api/categories');
-}
-// 获取单个分类列表
-function GetCategoryListRequest(categoryId) {
-  return _request.default.get("/api/categories/".concat(categoryId));
-}
-// 创建分类(管理员)
-function CreateCategoryRequest(name, description) {
-  return _request.default.post('/api/categories', {
-    name: name,
-    description: description
-  });
-}
-// 更新分类(管理员)
-function UpdateCategoryRequest(categoryId, name, description) {
-  return _request.default.put("/api/categories/".concat(categoryId), {
-    name: name,
-    description: description
-  });
-}
-// 删除分类(管理员)
-function DeleteCategoryRequest(categoryId) {
-  return _request.default.delete("/api/categories/".concat(categoryId));
+  var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+  var pageSize = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 999;
+  return _request.default.get("/api/categories?page=".concat(page, "&pageSize=").concat(pageSize));
 }
 
 /***/ }),
@@ -14944,8 +14920,53 @@ function ConfirmOrderRequest(orderId) {
 }
 
 /***/ }),
-/* 84 */,
-/* 85 */,
+/* 84 */
+/*!**************************************************************!*\
+  !*** D:/MilkTeaProject/milkteawxprogram/mixins/dateMixin.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _dateFormat = __webpack_require__(/*! @/utils/dateFormat.js */ 85);
+var _default = {
+  methods: {
+    formatDate: function formatDate(dateString) {
+      return (0, _dateFormat.formatDate)(dateString);
+    }
+  }
+};
+exports.default = _default;
+
+/***/ }),
+/* 85 */
+/*!**************************************************************!*\
+  !*** D:/MilkTeaProject/milkteawxprogram/utils/dateFormat.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.formatDate = formatDate;
+// 格式化日期
+function formatDate(dateString) {
+  if (!dateString) return '';
+  var date = new Date(dateString);
+  return "".concat(date.getFullYear(), "-").concat(String(date.getMonth() + 1).padStart(2, '0'), "-").concat(String(date.getDate()).padStart(2, '0'), " ").concat(String(date.getHours()).padStart(2, '0'), ":").concat(String(date.getMinutes()).padStart(2, '0'));
+}
+
+/***/ }),
 /* 86 */,
 /* 87 */,
 /* 88 */,
@@ -14960,7 +14981,9 @@ function ConfirmOrderRequest(orderId) {
 /* 97 */,
 /* 98 */,
 /* 99 */,
-/* 100 */
+/* 100 */,
+/* 101 */,
+/* 102 */
 /*!****************************************************************!*\
   !*** D:/MilkTeaProject/milkteawxprogram/api/ProductRequest.js ***!
   \****************************************************************/
@@ -15001,7 +15024,7 @@ function GetHotSearchRequest() {
 }
 
 /***/ }),
-/* 101 */
+/* 103 */
 /*!*****************************************************************************!*\
   !*** D:/MilkTeaProject/milkteawxprogram/node_modules/decimal.js/decimal.js ***!
   \*****************************************************************************/
@@ -19640,61 +19663,14 @@ var __WEBPACK_AMD_DEFINE_RESULT__;var _typeof = __webpack_require__(/*! @babel/r
 })(this);
 
 /***/ }),
-/* 102 */,
-/* 103 */,
 /* 104 */,
 /* 105 */,
 /* 106 */,
 /* 107 */,
 /* 108 */,
 /* 109 */,
-/* 110 */
-/*!**************************************************************!*\
-  !*** D:/MilkTeaProject/milkteawxprogram/mixins/dateMixin.js ***!
-  \**************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-var _dateFormat = __webpack_require__(/*! @/utils/dateFormat.js */ 111);
-var _default = {
-  methods: {
-    formatDate: function formatDate(dateString) {
-      return (0, _dateFormat.formatDate)(dateString);
-    }
-  }
-};
-exports.default = _default;
-
-/***/ }),
-/* 111 */
-/*!**************************************************************!*\
-  !*** D:/MilkTeaProject/milkteawxprogram/utils/dateFormat.js ***!
-  \**************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.formatDate = formatDate;
-// 格式化日期
-function formatDate(dateString) {
-  if (!dateString) return '';
-  var date = new Date(dateString);
-  return "".concat(date.getFullYear(), "-").concat(String(date.getMonth() + 1).padStart(2, '0'), "-").concat(String(date.getDate()).padStart(2, '0'), " ").concat(String(date.getHours()).padStart(2, '0'), ":").concat(String(date.getMinutes()).padStart(2, '0'));
-}
-
-/***/ }),
+/* 110 */,
+/* 111 */,
 /* 112 */,
 /* 113 */,
 /* 114 */,
@@ -19714,7 +19690,15 @@ function formatDate(dateString) {
 /* 128 */,
 /* 129 */,
 /* 130 */,
-/* 131 */
+/* 131 */,
+/* 132 */,
+/* 133 */,
+/* 134 */,
+/* 135 */,
+/* 136 */,
+/* 137 */,
+/* 138 */,
+/* 139 */
 /*!**********************************************************************************************************!*\
   !*** D:/MilkTeaProject/milkteawxprogram/uni_modules/uni-icons/components/uni-icons/uniicons_file_vue.js ***!
   \**********************************************************************************************************/
@@ -20217,21 +20201,21 @@ var fontData = [{
 exports.fontData = fontData;
 
 /***/ }),
-/* 132 */,
-/* 133 */,
-/* 134 */,
-/* 135 */,
-/* 136 */,
-/* 137 */,
-/* 138 */,
-/* 139 */,
 /* 140 */,
 /* 141 */,
 /* 142 */,
 /* 143 */,
 /* 144 */,
 /* 145 */,
-/* 146 */
+/* 146 */,
+/* 147 */,
+/* 148 */,
+/* 149 */,
+/* 150 */,
+/* 151 */,
+/* 152 */,
+/* 153 */,
+/* 154 */
 /*!********************************************************************!*\
   !*** D:/MilkTeaProject/milkteawxprogram/api/WxUserLoginRequest.js ***!
   \********************************************************************/
@@ -20261,14 +20245,6 @@ function GetUserInfoRequest() {
 }
 
 /***/ }),
-/* 147 */,
-/* 148 */,
-/* 149 */,
-/* 150 */,
-/* 151 */,
-/* 152 */,
-/* 153 */,
-/* 154 */,
 /* 155 */,
 /* 156 */,
 /* 157 */,
@@ -20303,7 +20279,15 @@ function GetUserInfoRequest() {
 /* 186 */,
 /* 187 */,
 /* 188 */,
-/* 189 */
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */
 /*!*************************************************************************************************************!*\
   !*** D:/MilkTeaProject/milkteawxprogram/uni_modules/uni-search-bar/components/uni-search-bar/i18n/index.js ***!
   \*************************************************************************************************************/
@@ -20318,9 +20302,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var _en = _interopRequireDefault(__webpack_require__(/*! ./en.json */ 190));
-var _zhHans = _interopRequireDefault(__webpack_require__(/*! ./zh-Hans.json */ 191));
-var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 192));
+var _en = _interopRequireDefault(__webpack_require__(/*! ./en.json */ 198));
+var _zhHans = _interopRequireDefault(__webpack_require__(/*! ./zh-Hans.json */ 199));
+var _zhHant = _interopRequireDefault(__webpack_require__(/*! ./zh-Hant.json */ 200));
 var _default = {
   en: _en.default,
   'zh-Hans': _zhHans.default,
@@ -20329,7 +20313,7 @@ var _default = {
 exports.default = _default;
 
 /***/ }),
-/* 190 */
+/* 198 */
 /*!************************************************************************************************************!*\
   !*** D:/MilkTeaProject/milkteawxprogram/uni_modules/uni-search-bar/components/uni-search-bar/i18n/en.json ***!
   \************************************************************************************************************/
@@ -20339,7 +20323,7 @@ exports.default = _default;
 module.exports = JSON.parse("{\"uni-search-bar.cancel\":\"cancel\",\"uni-search-bar.placeholder\":\"Search enter content\"}");
 
 /***/ }),
-/* 191 */
+/* 199 */
 /*!*****************************************************************************************************************!*\
   !*** D:/MilkTeaProject/milkteawxprogram/uni_modules/uni-search-bar/components/uni-search-bar/i18n/zh-Hans.json ***!
   \*****************************************************************************************************************/
@@ -20349,7 +20333,7 @@ module.exports = JSON.parse("{\"uni-search-bar.cancel\":\"cancel\",\"uni-search-
 module.exports = JSON.parse("{\"uni-search-bar.cancel\":\"取消\",\"uni-search-bar.placeholder\":\"请输入搜索内容\"}");
 
 /***/ }),
-/* 192 */
+/* 200 */
 /*!*****************************************************************************************************************!*\
   !*** D:/MilkTeaProject/milkteawxprogram/uni_modules/uni-search-bar/components/uni-search-bar/i18n/zh-Hant.json ***!
   \*****************************************************************************************************************/
