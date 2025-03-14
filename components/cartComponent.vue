@@ -208,6 +208,8 @@ $tea-secondary: #C39B77; /* 浅奶茶色 - 次要色 */
 $tea-light: #FFF8F0; /* 奶茶背景色 - 浅色 */
 $tea-accent: #E57373; /* 强调色 - 用于价格等 */
 $tea-dark: #333333; /* 深色 - 用于文本和底栏 */
+$tea-gradient: linear-gradient(135deg, $tea-secondary, $tea-primary);
+$tea-shadow: 0 4rpx 12rpx rgba(139, 90, 43, 0.25);
 
 .cart-component {
   position: relative;
@@ -219,35 +221,36 @@ $tea-dark: #333333; /* 深色 - 用于文本和底栏 */
 /* 购物车抽屉样式 */
 .cart-drawer {
   position: fixed;
-  bottom: 100rpx; /* 与底部购物车栏的高度对应 */
+  bottom: 110rpx; /* 与底部购物车栏的高度对应 */
   left: 0;
   width: 100%;
   background-color: #FFFFFF;
   border-radius: 30rpx 30rpx 0 0;
-  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -8rpx 30rpx rgba(0, 0, 0, 0.1);
   z-index: 999;
   transform: translateY(100%);
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  max-height: 65vh; /* 限制最大高度为视口高度的65% */
+  max-height: 70vh; /* 限制最大高度为视口高度的70% */
   display: flex;
   flex-direction: column;
   
   &.active {
     transform: translateY(0);
+    animation: bounceIn 0.5s;
   }
   
   .drawer-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 30rpx;
-    border-bottom: 1rpx solid #F0F0F0;
+    padding: 25rpx 20rpx 15rpx;
+    border-bottom: 1rpx solid #F5F5F5;
     position: relative;
     
     &::after {
       content: '';
       position: absolute;
-      top: 15rpx;
+      top: 12rpx;
       left: 50%;
       transform: translateX(-50%);
       width: 60rpx;
@@ -270,7 +273,7 @@ $tea-dark: #333333; /* 深色 - 用于文本和底栏 */
         top: 50%;
         transform: translateY(-50%);
         width: 4rpx;
-        height: 24rpx;
+        height: 28rpx;
         background-color: $tea-primary;
         border-radius: 2rpx;
       }
@@ -284,16 +287,18 @@ $tea-dark: #333333; /* 深色 - 用于文本和底栏 */
       margin-left: auto;
       margin-right: 20rpx;
       background-color: $tea-light;
-      padding: 8rpx 16rpx;
-      border-radius: 20rpx;
+      padding: 10rpx 20rpx;
+      border-radius: 30rpx;
       transition: all 0.2s ease;
+      box-shadow: 0 2rpx 6rpx rgba(0, 0, 0, 0.05);
       
       &:active {
         opacity: 0.8;
+        transform: scale(0.98);
       }
       
       text {
-        margin-left: 6rpx;
+        margin-left: 8rpx;
       }
     }
     
@@ -303,16 +308,18 @@ $tea-dark: #333333; /* 深色 - 用于文本和底栏 */
       font-size: 26rpx;
       color: #999999;
       background-color: #F5F5F5;
-      padding: 8rpx 16rpx;
-      border-radius: 20rpx;
+      padding: 10rpx 20rpx;
+      border-radius: 30rpx;
       transition: all 0.2s ease;
+      box-shadow: 0 2rpx 6rpx rgba(0, 0, 0, 0.05);
       
       &:active {
         opacity: 0.8;
+        transform: scale(0.98);
       }
       
       text {
-        margin-left: 6rpx;
+        margin-left: 8rpx;
       }
     }
   }
@@ -320,44 +327,58 @@ $tea-dark: #333333; /* 深色 - 用于文本和底栏 */
   .cart-items {
     flex: 1;
     overflow-y: auto;
-    padding: 10rpx 10rpx;
+    padding: 10rpx 15rpx;
+    -webkit-overflow-scrolling: touch; /* 增强iOS滚动体验 */
     
     .empty-cart {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 300rpx;
+      height: 350rpx;
       color: #999999;
       font-size: 28rpx;
       
       .uni-icons {
-        margin-bottom: 20rpx;
+        margin-bottom: 30rpx;
         opacity: 0.6;
+        transform: scale(1.2);
       }
       
       .empty-cart-tip {
-        margin-top: 10rpx;
+        margin-top: 15rpx;
         font-size: 24rpx;
         color: #BBBBBB;
+        background-color: #F8F8F8;
+        padding: 10rpx 20rpx;
+        border-radius: 20rpx;
       }
     }
     
     .cart-item {
       display: flex;
       align-items: center;
-      padding: 25rpx 15rpx;
+      padding: 20rpx 15rpx;
       border-bottom: 1rpx solid #F5F5F5;
       position: relative;
       transition: all 0.2s ease;
+      margin-bottom: 10rpx;
+      border-radius: 12rpx;
+      box-sizing: border-box;
+      width: 100%;
       
       &:active {
         background-color: #FAFAFA;
       }
       
+      &:last-child {
+        border-bottom: none;
+      }
+      
       .item-select {
-        padding: 10rpx;
-        margin-right: 10rpx;
+        padding: 8rpx;
+        margin-right: 8rpx;
+        flex-shrink: 0;
       }
       
       .item-image {
@@ -365,15 +386,18 @@ $tea-dark: #333333; /* 深色 - 用于文本和底栏 */
         height: 100rpx;
         border-radius: 12rpx;
         margin-right: 15rpx;
-        box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+        box-shadow: $tea-shadow;
         background-color: $tea-light;
         object-fit: cover;
+        border: 2rpx solid rgba(139, 90, 43, 0.1);
+        flex-shrink: 0;
       }
       
       .item-info {
         flex: 1;
         min-width: 0;
         padding-right: 10rpx;
+        overflow: hidden;
         
         .item-name {
           font-size: 28rpx;
@@ -387,20 +411,24 @@ $tea-dark: #333333; /* 深色 - 用于文本和底栏 */
         }
         
         .item-specs {
-          font-size: 24rpx;
+          font-size: 22rpx;
           color: #999999;
-          margin-bottom: 10rpx;
+          margin-bottom: 8rpx;
           display: block;
           line-height: 1.3;
           display: -webkit-box;
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
+          background-color: #F9F9F9;
+          padding: 4rpx 10rpx;
+          border-radius: 6rpx;
+          max-width: 95%;
         }
         
         .item-price-box {
           .item-price {
-            font-size: 30rpx;
+            font-size: 28rpx;
             color: $tea-accent;
             font-weight: bold;
           }
@@ -411,20 +439,24 @@ $tea-dark: #333333; /* 深色 - 用于文本和底栏 */
         display: flex;
         align-items: center;
         position: relative;
-        margin-left: 5rpx;
+        margin-left: 10rpx;
+        flex-shrink: 0;
+        width: 160rpx;
+        justify-content: space-between;
         
         .quantity-btn {
-          width: 44rpx;
-          height: 44rpx;
+          width: 50rpx;
+          height: 50rpx;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
           transition: all 0.2s ease;
+          flex-shrink: 0;
           
           &.minus {
-            background-color: #F5F5F5;
-            border: 1rpx solid #E0E0E0;
+            background-color: #FFF8F0; /* 浅奶茶色背景 */
+            border: 1rpx solid rgba(139, 90, 43, 0.2);
             
             &:active {
               opacity: 0.8;
@@ -432,12 +464,11 @@ $tea-dark: #333333; /* 深色 - 用于文本和底栏 */
           }
           
           &.plus {
-            background-color: $tea-primary;
-            box-shadow: 0 2rpx 6rpx rgba(139, 90, 43, 0.3);
+            background-color: $tea-primary; /* 奶茶主色 */
+            border: none;
             
             &:active {
               opacity: 0.8;
-              transform: scale(0.95);
             }
           }
         }
@@ -445,13 +476,19 @@ $tea-dark: #333333; /* 深色 - 用于文本和底栏 */
         .quantity-text {
           width: 40rpx;
           text-align: center;
-          font-size: 26rpx;
+          font-size: 28rpx;
           color: $tea-dark;
-          font-weight: bold;
+          font-weight: 500;
         }
       }
     }
   }
+}
+
+@keyframes bounceIn {
+  0% { transform: translateY(20%); }
+  70% { transform: translateY(-2%); }
+  100% { transform: translateY(0); }
 }
 
 /* 遮罩层样式 */
@@ -461,9 +498,9 @@ $tea-dark: #333333; /* 深色 - 用于文本和底栏 */
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   z-index: 998;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(3px);
   animation: fadeIn 0.3s ease;
 }
 
@@ -479,48 +516,49 @@ $tea-dark: #333333; /* 深色 - 用于文本和底栏 */
   left: 0;
   width: 100%;
   display: flex;
-  height: 98rpx;
-  background-color: $tea-dark;
-  box-shadow: 0 -2rpx 10rpx rgba(0,0,0,0.1);
-  border-radius: 20rpx 20rpx 0 0;
+  height: 110rpx;
+  background-color: #FFFFFF;
+  box-shadow: 0 -2rpx 15rpx rgba(0,0,0,0.08);
   z-index: 1000;
-  overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2rpx;
-    background: linear-gradient(to right, $tea-secondary, transparent);
-    opacity: 0.5;
-  }
+  overflow: visible;
   
   .cart-info {
     flex: 1;
     display: flex;
     align-items: center;
     padding: 0 30rpx;
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 20rpx;
+      height: 60rpx;
+      width: 1rpx;
+      background-color: #F0F0F0;
+    }
     
     .cart-icon {
-      width: 80rpx;
-      height: 80rpx;
+      width: 85rpx;
+      height: 85rpx;
       border-radius: 50%;
       background-color: #666666;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-right: 15rpx;
-      box-shadow: 0 4rpx 10rpx rgba(0, 0, 0, 0.3);
+      margin-right: 20rpx;
+      box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.2);
       position: relative;
-      top: -15rpx;
+      top: -30rpx;
       transition: all 0.3s ease;
-      border: 3rpx solid $tea-dark;
+      border: 4rpx solid #FFFFFF;
+      z-index: 10;
       
       &.active {
-        background: linear-gradient(135deg, $tea-secondary, $tea-primary);
-        transform: translateY(-5rpx);
+        background: $tea-gradient;
+        transform: translateY(-5rpx) rotate(15deg);
+        animation: cartShake 0.5s ease-out;
       }
       
       .cart-badge {
@@ -537,37 +575,43 @@ $tea-dark: #333333; /* 深色 - 用于文本和底栏 */
         align-items: center;
         justify-content: center;
         padding: 0 4rpx;
-        box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.2);
+        box-shadow: 0 2rpx 6rpx rgba(229, 115, 115, 0.4);
         animation: pulse 2s infinite;
+        font-weight: bold;
+        z-index: 11;
       }
     }
     
     .price-info {
+      margin-left: 5rpx;
+      position: relative;
+      top: -5rpx;
+      
       .total-price {
-        color: #FFFFFF;
-        font-size: 32rpx;
+        color: $tea-accent;
+        font-size: 36rpx;
         font-weight: bold;
-        text-shadow: 0 1rpx 3rpx rgba(0, 0, 0, 0.2);
       }
     }
   }
   
   .checkout-btn {
-    width: 220rpx;
+    width: 240rpx;
     height: 100%;
-    background-color: #CCCCCC;
-    color: #FFFFFF;
+    background-color: #EEEEEE;
+    color: #999999;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 30rpx;
+    font-size: 32rpx;
     font-weight: bold;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
     
     &.active {
-      background: linear-gradient(to right, $tea-secondary, $tea-primary);
+      background: $tea-gradient;
+      color: #FFFFFF;
       
       &::before {
         content: '';
@@ -576,12 +620,24 @@ $tea-dark: #333333; /* 深色 - 用于文本和底栏 */
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(to bottom, rgba(255,255,255,0.1), transparent);
+        background: linear-gradient(to bottom, rgba(255,255,255,0.2), transparent);
+      }
+      
+      &::after {
+        content: '';
+        position: absolute;
+        width: 30rpx;
+        height: 100%;
+        top: 0;
+        left: -100rpx;
+        background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+        transform: skewX(-25deg);
+        animation: shine 2s infinite;
       }
     }
     
     &.active:active {
-      transform: scale(0.98);
+      transform: scale(0.97);
     }
     
     text {
@@ -589,6 +645,20 @@ $tea-dark: #333333; /* 深色 - 用于文本和底栏 */
       z-index: 1;
     }
   }
+}
+
+@keyframes cartShake {
+  0% { transform: translateY(-8rpx) rotate(0deg); }
+  25% { transform: translateY(-8rpx) rotate(15deg); }
+  50% { transform: translateY(-8rpx) rotate(-10deg); }
+  75% { transform: translateY(-8rpx) rotate(5deg); }
+  100% { transform: translateY(-8rpx) rotate(0deg); }
+}
+
+@keyframes shine {
+  0% { left: -100rpx; }
+  20% { left: 100%; }
+  100% { left: 100%; }
 }
 
 @keyframes pulse {
